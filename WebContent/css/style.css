@@ -1,6 +1,5 @@
 body{
     font-family:serif;
-    background-color: #f5f5f5;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -10,4 +9,7 @@ body{
 .table > tfoot > tr > td {
   vertical-align: middle;
 
+}
+.container >.panel{
+  margin-bottom: 50px;
 }

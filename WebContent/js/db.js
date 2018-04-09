@@ -58,14 +58,42 @@ DB.load = function() {
 
 	//applications
 	alasql('DROP TABLE IF EXISTS application;');
-	alasql('CREATE TABLE application(id INT,groupid INT,name STRING,phone STRING,email STRING,date STRING,address STRING ,country STRING ,isactive INT ,linkedin STRING,github STRING,stackoverflow STRING);');
+	alasql('CREATE TABLE application(id INT,jobid INT,name STRING,phone STRING,email STRING,date STRING,address STRING ,country STRING ,isactive INT ,linkedin STRING,github STRING,stackoverflow STRING);');
 	var papplication = alasql.promise('SELECT MATRIX * FROM CSV("data/APPLICATION-APPLICATION.csv", {headers: true})').then(function(applications) {
 		for (var i = 0; i < applications.length; i++) {
 			alasql('INSERT INTO application VALUES(?,?,?,?,?,?,?,?,?,?,?,?);', applications[i]);
 		}
 	});
+
+	// positions
+	alasql('DROP TABLE IF EXISTS position;');
+	alasql('CREATE TABLE position(id INT,position STRING);');
+	var ppositions = alasql.promise('SELECT MATRIX * FROM CSV("data/POSITION-POSITION.csv", {headers: true})').then(function(jobs) {
+		for (var i = 0; i < jobs.length; i++) {
+			alasql('INSERT INTO position VALUES(?,?);', jobs[i]);
+		}
+	});
+
+	// jobs
+	alasql('DROP TABLE IF EXISTS job;');
+	alasql('CREATE TABLE job(id INT,position STRING,date STRING, description STRING, active INT, closedate STRING);');
+	var pjobs = alasql.promise('SELECT MATRIX * FROM CSV("data/JOB-JOB.csv", {headers: true})').then(function(jobs) {
+		for (var i = 0; i < jobs.length; i++) {
+			alasql('INSERT INTO job VALUES(?,?,?,?,?,?);', jobs[i]);
+		}
+	});
+
+	// interviewer
+	alasql('DROP TABLE IF EXISTS interview;');
+	alasql('CREATE TABLE interview(jobid INT,empid INT);');
+	var pinterviewer = alasql.promise('SELECT MATRIX * FROM CSV("data/INTERVIEW-INTERVIEW.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO interview VALUES(?,?);', interviews[i]);
+		}
+	});
+
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication ]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer ]).then(function() {
 		window.location.reload(true);
 	});
 };

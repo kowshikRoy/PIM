@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="lib/jquery.js"></script>
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<script src="lib/bootstrap.js"></script>
+	<script src="lib/alasql.js"></script>
+	<script src="lib/purl.js"></script>
+	<script src="js/db.js"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta name="viewport" content="width=device-width">
+	<title>COMPANY</title>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">COMPANY</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a href="index.html">Personal Info Management
+						</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<span class="fa fa-chevron-down"></span>
+							Actions
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+                            <li><a href="newjob.html">Create New Job</a></li>
+                            <li><a href="newjob.html">Compare Candidates</a></li>
+						</ul>
+                    </li>
+                    <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-cog fa-spin"></span>
+                                Settings
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" onclick="window.location.reload(true);">
+                                        <span class="fa fa-refresh"></span> Reload</a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="DB.init();">
+                                        <span class="fa fa-repeat"></span> Init DB</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#" onclick="DB.remove();">
+                                        <span class="fa fa-trash"></span> Delete DB</a>
+                                </li>
+                            </ul>
+                        </li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+    </nav>
+    
+    <div class="container text-center" id="page404" style="background-color:#33b5e5; border-radius:5px; max-width:900px; padding:100px; color:white; margin-top:50px; "></div>
+    <div class="container" id="content">
+        
+        <ul class="nav nav-tabs">
+            <li>
+                <a href="#description" data-toggle="tab">
+                    <span class="fa fa-info"></span> Description </a>
+            </li>
+            <li>
+                <a href="#interviewer" data-toggle="tab">
+                    <span class="fa fa-home"></span> Interviewer </a>
+            </li>
+            <li class="active">
+                <a href="#candidates" data-toggle="tab">
+                    <span class="fa fa-user"></span> Candidates </a>
+            </li>
+            <li>
+                <a href="#education" data-toggle="tab">
+                    <span class="fa fa-book"></span> Academic</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+                <div class="tab-pane" id="description">
+                    <div class="panel panel-info" style="margin-top:20px;">
+                        <div class="panel-body" id="j-description">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="interviewer">
+                    <div class="panel panel-primary" style="margin-top:20px;">
+                        <div class="panel-body" id="j-interviewer">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane active" id="candidates">
+                    <div class="panel panel-info" style="margin-top:20px;">
+                        <div class="panel-body" >
+                            <ul class="nav nav-pills">
+                                <li class="active">
+                                    <a href="#active-candidate" data-toggle="tab">
+                                        <span class="fa fa-info"></span> Active </a>
+                                </li>
+                                <li>
+                                    <a href="#all-candidate" data-toggle="tab">
+                                        <span class="fa fa-home"></span> All </a>
+                                </li>
+                                <li>
+                                    <a href="#reapplied-candidate" data-toggle="tab">
+                                        <span class="fa fa-user"></span> Reapplied  </a>
+                                </li>
+                                <li>
+                                    <a href="#duplicate-candidate" data-toggle="tab">
+                                        <span class="fa fa-book"></span> Duplicate </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="active-candidate">
+                                    <div class="panel panel-primary" style="margin-top:20px;">
+                                        <div class="panel-body" id="j-active-candidate"> 1
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="all-candidate">
+                                    <div class="panel panel-primary" style="margin-top:20px;">
+                                        <div class="panel-body" id="j-active-candidate"> 2
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="reapplied-candidate">
+                                    <div class="panel panel-primary" style="margin-top:20px;">
+                                        <div class="panel-body" id="j-active-candidate"> 3
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="duplicate-candidate">
+                                    <div class="panel panel-primary" style="margin-top:20px;">
+                                        <div class="panel-body" id="j-active-candidate"> 4
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="education">
+                    
+                </div>
+            </div>
+    </div>
+    
+    <script src="js/job.js"></script>
+</body>
+
+</html>
