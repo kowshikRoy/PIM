@@ -25,11 +25,12 @@ for(var i = 0; i < qactive.length; i ++) {
                     '<p style="font-size:13px">Posting Date: ' + job.date + '<p> \
                     </div> \
                     <div class="col-md-2"> <button class="btn ' + className +  '">'  + str + '</button> </div> \
-                    <div class="col-md-2"> <a href="job.html?id=' + job.id + '" class="btn btn-success"> Go to Job </a> </div> \
+                    <div class="col-md-1"> <a href="job.html?id=' + job.id + '" class="btn btn-success"> Go to Job </a> </div> \
+                    <div class="col-md-1"> <button class="btn btn-link" data-toggle="collapse" data-target="#act-' + i + '" aria-hidden=false> <i class="fa fa-chevron-down"></i> </button> </div> \
                 </div> \
             </h3> \
         </div> \
-        <div class ="panel-body" >' + job.description + ' \
+        <div class ="panel-collapse panel-body" id = "act-' + i + '" >' + job.description + ' \
     </div>';
 
 

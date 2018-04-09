@@ -64,7 +64,14 @@ DB.load = function() {
 			alasql('INSERT INTO application VALUES(?,?,?,?,?,?,?,?,?,?,?,?);', applications[i]);
 		}
 	});
-
+	// departments
+	alasql('DROP TABLE IF EXISTS department;');
+	alasql('CREATE TABLE department(id INT,dept STRING);');
+	var pdepts = alasql.promise('SELECT MATRIX * FROM CSV("data/DEPARTMENT-DEPARTMENT.csv", {headers: true})').then(function(jobs) {
+		for (var i = 0; i < jobs.length; i++) {
+			alasql('INSERT INTO department VALUES(?,?);', jobs[i]);
+		}
+	});
 	// positions
 	alasql('DROP TABLE IF EXISTS position;');
 	alasql('CREATE TABLE position(id INT,position STRING);');
@@ -76,10 +83,10 @@ DB.load = function() {
 
 	// jobs
 	alasql('DROP TABLE IF EXISTS job;');
-	alasql('CREATE TABLE job(id INT,position STRING,date STRING, description STRING, active INT, closedate STRING);');
+	alasql('CREATE TABLE job(id INT,position INT,date STRING, description STRING, active INT, closedate STRING, dept INT, employment STRING);');
 	var pjobs = alasql.promise('SELECT MATRIX * FROM CSV("data/JOB-JOB.csv", {headers: true})').then(function(jobs) {
 		for (var i = 0; i < jobs.length; i++) {
-			alasql('INSERT INTO job VALUES(?,?,?,?,?,?);', jobs[i]);
+			alasql('INSERT INTO job VALUES(?,?,?,?,?,?,?,?);', jobs[i]);
 		}
 	});
 
@@ -93,7 +100,7 @@ DB.load = function() {
 	});
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer ]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts]).then(function() {
 		window.location.reload(true);
 	});
 };
