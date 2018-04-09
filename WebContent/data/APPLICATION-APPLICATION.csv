@@ -1,0 +1,3 @@
+ID,GROUPID,NAME,PHONE,EMAIL,DATE,ADDRESS,COUNTRY,ISACTIVE,LINKEDIN,GITHUB,STACKOVERFLOW
+1,1,john doe,1923821,john.doe@gmail.com,01-01-2018,118998,bangladesh,1,www.linedin.com/12321,github.com/123, stackoverflow.com/123
+2,1,john doe,1923821,john.doe@gmail.com,01-01-2018,118998,bangladesh,1,www.linedin.com/12321,, stackoverflow.com/123
