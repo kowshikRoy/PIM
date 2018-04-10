@@ -9,10 +9,10 @@ DB.init = function() {
 DB.load = function() {
 	// personal info
 	alasql('DROP TABLE IF EXISTS emp;');
-	alasql('CREATE TABLE emp(id INT IDENTITY, number STRING, name STRING, sex INT, birthday DATE, tel STRING, ctct_name STRING, ctct_addr STRING, ctct_tel STRING, pspt_no STRING, pspt_date STRING, pspt_name STRING, rental STRING);');
+	alasql('CREATE TABLE emp(id INT IDENTITY, number STRING, name STRING, sex INT, birthday DATE, tel STRING, ctct_name STRING, ctct_addr STRING, ctct_tel STRING, pspt_no STRING, pspt_date STRING, pspt_name STRING, rental STRING, position INT);');
 	var pemp = alasql.promise('SELECT MATRIX * FROM CSV("data/EMP-EMP.csv", {headers: true})').then(function(emps) {
 		for (var i = 0; i < emps.length; i++) {
-			alasql('INSERT INTO emp VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);', emps[i]);
+			alasql('INSERT INTO emp VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?);', emps[i]);
 		}
 	});
 
@@ -83,10 +83,10 @@ DB.load = function() {
 
 	// jobs
 	alasql('DROP TABLE IF EXISTS job;');
-	alasql('CREATE TABLE job(id INT,position INT,date STRING, description STRING, active INT, closedate STRING, dept INT, employment STRING);');
+	alasql('CREATE TABLE job(id INT,position INT,date STRING, description STRING, active INT, closedate STRING, dept INT, employment STRING, company STRING, requirement STRING, preferred_req STRING);');
 	var pjobs = alasql.promise('SELECT MATRIX * FROM CSV("data/JOB-JOB.csv", {headers: true})').then(function(jobs) {
 		for (var i = 0; i < jobs.length; i++) {
-			alasql('INSERT INTO job VALUES(?,?,?,?,?,?,?,?);', jobs[i]);
+			alasql('INSERT INTO job VALUES(?,?,?,?,?,?,?,?,?,?,?);', jobs[i]);
 		}
 	});
 
@@ -98,9 +98,35 @@ DB.load = function() {
 			alasql('INSERT INTO interview VALUES(?,?);', interviews[i]);
 		}
 	});
+	//card
+
+	alasql('DROP TABLE IF EXISTS card;');
+	alasql('CREATE TABLE card(id INT,name STRING, skill STRING, rank INT);');
+	var pcard = alasql.promise('SELECT MATRIX * FROM CSV("data/CARD-CARD.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO card VALUES(?,?,?,?);', interviews[i]);
+		}
+	});
+
+	// pipeline
+	alasql('DROP TABLE IF EXISTS pipeline;');
+	alasql('CREATE TABLE pipeline(jobid INT,stepid INT, cardid INT);');
+	var ppipe = alasql.promise('SELECT MATRIX * FROM CSV("data/PIPELINE-PIPELINE.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO pipeline VALUES(?,?,?);', interviews[i]);
+		}
+	});
+	// step
+	alasql('DROP TABLE IF EXISTS step;');
+	alasql('CREATE TABLE step(id INT,name STRING);');
+	var pstep = alasql.promise('SELECT MATRIX * FROM CSV("data/STEP-STEP.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO step VALUES(?,?);', interviews[i]);
+		}
+	});
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard]).then(function() {
 		window.location.reload(true);
 	});
 };

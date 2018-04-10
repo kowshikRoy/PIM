@@ -101,7 +101,7 @@
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">Add New Position</h4>
                                     </div>
                                     <div class="modal-body">
@@ -119,28 +119,22 @@
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-2 control-label">Company Description</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="company" style="min-width:100%; max-width:100%;" rows = "4" placeholder="Write Job Description"></textarea>
+                            <textarea class="form-control" id="inputPassword3" style="min-width:100%; max-width:100%;" rows = "4" placeholder="Write Job Description"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-2 control-label">Responsibilities</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="responsibility" style="min-width:100%; max-width:100%;" rows = "4" placeholder="Write Responsibilities of the job"></textarea>
+                            <textarea class="form-control" id="inputPassword3" style="min-width:100%; max-width:100%;" rows = "4" placeholder="Write Responsibilities of the job"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-2 control-label">Requirements</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="requirement" style="min-width:100%;max-width:100%;" rows = "4" placeholder="Write Requirements of the job"></textarea>
+                            <textarea class="form-control" id="inputPassword3" style="min-width:100%;max-width:100%;" rows = "4" placeholder="Write Requirements of the job"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                            <label for="inputPassword3" class="col-sm-2 control-label">Preferred Requirements</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="preferred_req" style="min-width:100%;max-width:100%;" rows = "4" placeholder="Write Requirements of the job"></textarea>
-                            </div>
-                        </div>
 
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Department</label>
@@ -176,7 +170,7 @@
                         <label for="inputPassword3" class="col-sm-2 control-label">Employment</label>
                         <div class="col-sm-10" id="employment" >
                             <select class="form-control">
-                                <option selected="selected" value="full-time">Full-time</option>
+                                <option selected value="full-time">Full-time</option>
                                 <option value="part-time">Part-time</option>
                             </select>
                         </div>
@@ -191,7 +185,7 @@
                     
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <a type="submit" href="job.html" class="btn btn-default" onclick="insertJob()">Create</button>
+                            <button type="submit" class="btn btn-default" onclick="insertJob()">Create</button>
                         </div>
                     </div>
                 </form>
@@ -200,7 +194,7 @@
     </div>
     
     
-    <script src="js/newjob.js"></script>
+    <script src="js/jobedit.js"></script>
 </body>
 
 </html>

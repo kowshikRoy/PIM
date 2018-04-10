@@ -1,8 +1,12 @@
-ID,CARDNAME,Criteria,
-1,Software Engineer Card,Problem Solving,TO DO
-1,Software Engineer Card,Communication,TO DO
-1,Software Engineer Card,Decision Making,TO DO
-1,Software Engineer Card,Team Work,TO DO
-2,R & D Software Engineer Card,Problem Solving,TO DO
-2,R & D Software Engineer Card,Communication,TO DO
-2,R & D Software Engineer Card,Decision Making,TO DO
+ID,Name,SKILL,RANK
+1,Software Engineer Role,Problem solving,100
+1,Software Engineer Role,Communication,100
+2,R&D Software Engineer Role,Algorithm,100
+1,Software Engineer Role,Data Structure,100
+2,R&D Software Engineer Role,Decision making,100
+2,R&D Software Engineer Role,Adaptibility,100
+2,R&D Software Engineer Role,Problem solving,100
+3,Senior Software Engineer Role,Communication,100
+3,Senior Software Engineer Role,Problem solving,100
+3,Senior Software Engineer Role,Decision making,100
+3,Senior Software Engineer Role,Teamwork,100

@@ -14,13 +14,14 @@ $('#pspt_date').text(emp.pspt_date);
 $('#pspt_name').text(emp.pspt_name);
 $('#rental').text(DB.choice(emp.rental));
 
+
 // set image and name
 $('#img-emp').attr('src', 'img/' + emp.id + '.jpg');
 $('#div-name_kanji').text(emp.name);
 $('#div-number').text(emp.number);
 $('#nav-emp').text(emp.name);
 $('#form-emp').attr('href', 'emp-form.html?id=' + id);
-
+$('#position').text(alasql('select * from position where id=?', [emp.position])[0].position);
 // read address info
 var addrs = alasql('SELECT * FROM addr WHERE emp=?', [ id ]);
 for (var i = 0; i < addrs.length; i++) {

@@ -1,5 +1,5 @@
 body{
-    font-family:'Times New Roman', Times, serif;
+    font-family:serif;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -8,7 +8,6 @@ body{
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
   vertical-align: middle;
-
 }
 .container >.panel{
   margin-bottom: 50px;
