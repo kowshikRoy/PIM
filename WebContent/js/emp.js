@@ -83,3 +83,95 @@ function destroy() {
 		window.location.assign('index.html');
 	}
 }
+
+var today = new Date();
+var date = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+    
+$('#calendar').fullCalendar({
+	header: {
+	  left: 'prev,next today',
+	  center: 'title',
+	  right: 'listDay,listWeek,month'
+	},
+
+	// customize the button names,
+	// otherwise they'd all just say "list"
+	views: {
+	  listDay: { buttonText: 'list day' },
+	  listWeek: { buttonText: 'list week' }
+	},
+	selectable: true,
+	selectHelper: true,
+	select: function(start, end) {
+	  var title = prompt('Event Title:');
+	  var eventData;
+	  if (title) {
+		eventData = {
+		  title: title,
+		  start: start,
+		  end: end
+		};
+		$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+	  }
+	  $('#calendar').fullCalendar('unselect');
+	},
+	defaultView: 'listWeek',
+	defaultDate: date,
+	navLinks: true, // can click day/week names to navigate views
+	editable: true,
+	eventLimit: true, // allow "more" link when too many events
+	events: []
+  });
+
+  $('#calendar-choose').fullCalendar({
+	header: {
+	  left: 'prev,next today',
+	  center: 'title',
+	  right: 'agendaDay,agendaWeek,listWeek'
+	},
+
+	// customize the button names,
+	// otherwise they'd all just say "list"
+	views: {
+		agendaDay: { buttonText: 'Today' },
+		agendaWeek: {buttonText: 'This Week'},
+		listWeek : { buttonText: 'List Week'}
+	},
+	
+	selectable: true,
+	selectHelper: true,
+	select: function(start, end) {
+	  var title = prompt('Event Title:');
+	  var eventData;
+	  if (title) {
+		eventData = {
+		  title: title,
+		  start: start,
+		  end: end
+		};
+		$('#calendar-choose').fullCalendar('renderEvent', eventData, true); // stick? = true
+	  }
+	  $('#calendar-choose').fullCalendar('unselect');
+	},
+	defaultView: 'listWeek',
+	defaultDate: date,
+	navLinks: true, // can click day/week names to navigate views
+	editable: true,
+	eventLimit: true, // allow "more" link when too many events
+	events: []
+  });
+
+  function testFunction()
+  {
+	  var e = $('#calendar-choose').fullCalendar('clientEvents');
+	  console.log(e);
+	  $('#calendar-choose').fullCalendar('removeEvents');
+	
+	 for(var i = 0; i < e.length ; i ++) {
+
+	 }
+  }
+
+  var plans = alasql('select * from ')
+
+

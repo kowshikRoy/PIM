@@ -116,6 +116,24 @@ DB.load = function() {
 			alasql('INSERT INTO pipeline VALUES(?,?,?);', interviews[i]);
 		}
 	});
+
+	// plan
+	alasql('DROP TABLE IF EXISTS plan;');
+	alasql('CREATE TABLE plan(id INT,empid INT, type STRING, eventid INT);');
+	var pplan = alasql.promise('SELECT MATRIX * FROM CSV("data/PLAN-PLAN.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO plan VALUES(?,?,?,?);', interviews[i]);
+		}
+	});
+
+	// event
+	alasql('DROP TABLE IF EXISTS eventt;');
+	alasql('CREATE TABLE eventt(id INT,title STRING, st STRING, ed STRING);');
+	var pevent = alasql.promise('SELECT MATRIX * FROM CSV("data/EVENT-EVENT.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO eventt VALUES(?,?,?,?);', interviews[i]);
+		}
+	});
 	// step
 	alasql('DROP TABLE IF EXISTS step;');
 	alasql('CREATE TABLE step(id INT,name STRING);');
@@ -126,7 +144,7 @@ DB.load = function() {
 	});
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard]).then(function() {
+	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan, pevent]).then(function() {
 		window.location.reload(true);
 	});
 };
