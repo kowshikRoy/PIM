@@ -39,13 +39,13 @@
         </div>
         
 		<ul class="nav nav-tabs">
-			<li>
+			<li class="active">
 				<a href="#interview" data-toggle="tab">
 					<span class="fa fa-code"></span> Interview</a>
 			</li>
 			<li>
 				<a href="#tab-calendar" data-toggle="tab">
-					<span class="fa fa-calendar"></span> My calendar</a>
+					<span class="fa fa-calendar"></span> Interview Schedule Choose</a>
 			</li>
 			<li>
 				<a href="#notifications" data-toggle="tab">
@@ -56,12 +56,40 @@
 		</ul>
 
         <!-- Tab panes -->
-        <div class="tab-content">
+        <div class="tab-content" style="margin-top:3px;">
             <div class="tab-pane active" id="interview">
-                1
+                <div class="panel panel-default" id = "in1">
+					<div class="panel-heading">
+						<div class="panel-title">Your Interview</div>
+					</div>
+					<div class="panel-body">
+
+					</div>
+				</div>
+				<div class="panel panel-default" id = "in2">
+						<div class="panel-heading">
+							<div class="panel-title">Your Interview Request</div>
+						</div>
+						<div class="panel-body">
+							
+						</div>
+					</div>
             </div>
             <div class="tab-pane" id="tab-calendar">
-                    <div id="calendar" style="margin-top:20px;padding:10px; border: 1px solid #f5f5f5; border-radius: 5px;"></div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">Schedule your interview</div>
+					</div>
+					<div class="panel-body">
+						<label>Choose Interview Date </label>
+						<input type="date" id="chooseInterviewDate" onchange="displaySlot()">
+						<div id="selector"></div>
+					</div>
+					<div class="panel-footer">
+						<button class="btn btn-primary btn-sm" onclick="saveInterviewChoice(this)">Confirm</button>
+					</div>
+				</div>
+                
             </div>
             <div class="tab-pane" id="notifications">
                 1

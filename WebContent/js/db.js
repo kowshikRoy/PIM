@@ -155,6 +155,26 @@ DB.load = function() {
 			alasql('INSERT INTO interview VALUES(?,?);', interviews[i]);
 		}
 	});
+
+	// INTERVIEW REQUEST
+	alasql('DROP TABLE IF EXISTS interviewRequest;');
+	alasql('CREATE TABLE interviewRequest(id INT,appid INT, time INT);');
+	var pinterviewerReq = alasql.promise('SELECT MATRIX * FROM CSV("data/INTREQ-INTREQ.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO interviewRequest VALUES(?,?,?);', interviews[i]);
+		}
+	});
+
+
+	// FIXED INTERVIEW
+	alasql('DROP TABLE IF EXISTS scheduleInterview;');
+	alasql('CREATE TABLE scheduleInterview(id INT,jobid INT, appid INT, empid INT, time INT);');
+	var pscheduleInterview = alasql.promise('SELECT MATRIX * FROM CSV("data/FIXED-FIXED.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO scheduleInterview VALUES(?,?,?,?,?);', interviews[i]);
+		}
+	});
+
 	//card
 
 	alasql('DROP TABLE IF EXISTS card;');
@@ -193,7 +213,7 @@ DB.load = function() {
 	});
 
 	// reload html
-	Promise.all([pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
+	Promise.all([pscheduleInterview,pinterviewerReq, pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
 		window.location.reload(true);
 	});
 };

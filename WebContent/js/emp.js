@@ -177,10 +177,9 @@ $('#calendar').fullCalendar({
 
      }
      $('#calendar-choose').fullCalendar('removeEvents');
-     planList();
+	 planList();
   }
-
-
+  $('#calendar-choose').fullCalendar('option', 'timezone', 'local');
 planList();
 showCalendar();
 function planList() 
@@ -243,6 +242,8 @@ function deleteplan(e) {
 
 function showCalendar() 
 {
+	console.log(100);
+	$('#calendar').fullCalendar('option', 'timezone', 'local');
     var plans = alasql('select * from empplan where empid = ? order by id',[id]);
     for(var i = 0; i < plans.length ; i ++) {
         var newEvent = {

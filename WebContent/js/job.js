@@ -247,3 +247,15 @@ function saveCard(e) {
     if($('#step-select-modal').is(':visible')) $('#step-select-modal').modal('toggle');
 }
 
+function processInterviewRequest() {
+	var req = alasql('select * from interviewRequest order by time');
+	var interviewers = alasql('select * from interview where jobid = ?',q1);
+	for (var i = 0; i < req.length; i++) {
+		var single = req[i];
+		var interviews = alasql('select * from scheduleInterview where appid = ?', single.appid);
+		if (interviews.length > 0) {
+			continue;
+		}
+		
+	}
+} 
