@@ -4,6 +4,7 @@
 <head>
 	<script src="lib/jquery.js"></script>
 	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/jquery-ui.css" rel="stylesheet">
 	<script src="lib/bootstrap.js"></script>
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
@@ -18,6 +19,8 @@
 	<script src='lib/moment.min.js'></script>
 	
 	<script src='lib/fullcalendar.min.js'></script>
+	
+    <script src="lib/jquery-ui.js"></script>
 	<meta charset="utf-8">
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-Control" content="no-cache">
@@ -270,12 +273,10 @@
 									<div class="panel-heading">
 										My Plans
 									</div>
-									<div class="panel-body">
-										<ul class="list-group">
-											<li class="list-group-item">1</li>
-											<li class="list-group-item">1</li>
-											<li class="list-group-item">1</li>
-										</ul>
+									<div class="panel-body" id = "myplan">
+										<div id="accordion">
+											
+										  </div>
 									</div>
 								</div>
 							</div>
@@ -287,9 +288,9 @@
 									</div>
 								<div class="panel-body">
 								<label>Select Plan</label>
-								<select class="form-control">
+								<select class="form-control" id="empPlan-choose">
 									<option value="once">Once</option>
-									<option selected="selected" value="daily">Daily</option>
+									<option selected value="daily">Daily</option>
 									<option value="weekly">Weekly</option>
 								</select>
 								<div id="calendar-choose" style="margin-top:20px; margin-bottom: 20px;"></div>
@@ -307,9 +308,7 @@
 				<div id="calendar" style="margin-top:20px;padding:10px; border: 1px solid #f5f5f5; border-radius: 5px;"></div>
 			</div>
 			<div class="tab-pane" id="notifications">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						  </button>
+					
 			</div>
 		</div>
 	</div>

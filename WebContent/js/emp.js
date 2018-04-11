@@ -141,7 +141,7 @@ $('#calendar').fullCalendar({
 	selectable: true,
 	selectHelper: true,
 	select: function(start, end) {
-	  var title = prompt('Event Title:');
+	  var title = ' ';
 	  var eventData;
 	  if (title) {
 		eventData = {
@@ -165,13 +165,93 @@ $('#calendar').fullCalendar({
   {
 	  var e = $('#calendar-choose').fullCalendar('clientEvents');
 	  console.log(e);
-	  $('#calendar-choose').fullCalendar('removeEvents');
-	
+	 
+	var planid =  alasql('SELECT MAX(id) + 1 as id FROM empplan')[0].id;
 	 for(var i = 0; i < e.length ; i ++) {
+        var title = e[i].title;
+        var start = Date.parse(e[i].start);
+        var end = Date.parse(e[i].end);
+        console.log(planid, id, title, start, end, $('#empPlan-choose').val());
+        
+        alasql('insert into empplan values (?,?,?,?,?,?);', [planid, id,$('#empPlan-choose').val(), title, start,  end]);
 
-	 }
+     }
+     $('#calendar-choose').fullCalendar('removeEvents');
+     planList();
   }
 
-  var plans = alasql('select * from ')
 
+planList();
+showCalendar();
+function planList() 
+{
+    var plans = alasql('select * from empplan where empid = ? order by id',[id]);
+    console.log(plans);
+    var prev = -1;
+    var counter = 1;
+    
+    
+    $('#accordion').html('');
+    for(var i = 0; i < plans.length ; i ++) {
+        console.log(i);
+        var plan = '<h3>#' + counter + ' - ' + plans[i].type + ' plan </h3>';
+        var div = $('<div id = "plan'+plans[i].id + '"></div>');
+        var list = $('<ul class="list-group"> </ul>');
+        var j = i;
+        while(j < plans.length && plans[j].id == plans[i].id) {
+            var start = new Date(plans[j].st);
+            var end = new Date(plans[j].ed);
+            list.append(
+                '<li class="list-group-item"> \
+                    <div class="row" > \
+                        <div class="col-md-6">\
+                            <p> Start \
+                            <p>' + start.toString() + '</p> \
+                        </div> \
+                        <div class="col-md-6">\
+                            <p> End \
+                            <p>' + end.toString() + '</p> \
+                    </div> \
+                </li>'
+            );
+            j ++;
+        }
+        i = j-1;
+        div.append(list);
+        div.append('<button class="btn btn-danger btn-sm pull-right" onclick="deleteplan(this)"><i class="fa fa-remove"> </i></button>');
+        $('#accordion').append(plan);
+        $('#accordion').append(div);
+        counter ++;
+    }
+    $( "#accordion" ).accordion({
+        heightStyle: "content",
+        collapsible: true,
+        active:false,
+
+    });
+    $('#accordion').accordion('refresh');
+
+    
+}
+
+
+function deleteplan(e) {
+    var planid = parseInt(e.closest('div').id.slice(4));
+    alasql('delete from empplan where id = ?', [planid]);
+    planList();
+}
+
+function showCalendar() 
+{
+    var plans = alasql('select * from empplan where empid = ? order by id',[id]);
+    for(var i = 0; i < plans.length ; i ++) {
+        var newEvent = {
+            title : plans[i].title,
+            start : new Date(plans[i].st),
+            end   : new Date(plans[i].ed)
+        }
+        $('#calendar').fullCalendar('renderEvent',newEvent, true);
+    }
+    
+}
 

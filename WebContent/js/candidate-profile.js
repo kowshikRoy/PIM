@@ -28,10 +28,11 @@ if (applicationId) {
     }
     else {
         $('#content').hide();
-        $('#page404').html('<h1>404</h1> <h4> Please use valid application id </h4> <a href="index.html" class="btn btn-warning">Back</a> ')
+        window.location.href = 'page404.html';
     }
 }
 else {
+    window.location.href = 'page404.html';
     $('#content').hide();
-    $('#page404').html('<h2>404</h2> <p> Please use valid application id </p> <a href="index.html" class="btn btn-default">Back</a> ')
+    // $('#page404').html('<h2>404</h2> <p> Please use valid application id </p> <a href="index.html" class="btn btn-default">Back</a> ')
 }

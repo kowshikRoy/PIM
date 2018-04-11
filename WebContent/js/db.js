@@ -54,14 +54,63 @@ DB.load = function() {
 					alasql('INSERT INTO choice VALUES(?,?,?);', choices[i]);
 				}
 			});
+	
+	//EDUCATION CANDIDATE
+	alasql('DROP TABLE IF EXISTS educan;');
+	alasql('CREATE TABLE educan(id INT IDENTITY, appid INT, degreeid INT, university STRING, major STRING, cgpa NUMBER);');
+	var peducan = alasql.promise('SELECT MATRIX * FROM CSV("data/EDUCAN-EDUCAN.csv", {headers: true})').then(
+			function(choices) {
+				for (var i = 0; i < choices.length; i++) {
+					alasql('INSERT INTO educan VALUES(?,?,?,?,?,?);', choices[i]);
+				}
+			});
+	
+	//WORK EXP
+	alasql('DROP TABLE IF EXISTS workexp;');
+	alasql('CREATE TABLE workexp(id INT IDENTITY, appid INT, position STRING, company STRING, duration INT, description STRING);');
+	var pwork = alasql.promise('SELECT MATRIX * FROM CSV("data/WORK-WORK.csv", {headers: true})').then(
+			function(choices) {
+				for (var i = 0; i < choices.length; i++) {
+					alasql('INSERT INTO workexp VALUES(?,?,?,?,?,?);', choices[i]);
+				}
+			});
+	
+	//PROJECT
+	alasql('DROP TABLE IF EXISTS project;');
+	alasql('CREATE TABLE project(id INT IDENTITY, appid INT, name STRING, description STRING);');
+	var pproject = alasql.promise('SELECT MATRIX * FROM CSV("data/PROJECT-PROJECT.csv", {headers: true})').then(
+			function(choices) {
+				for (var i = 0; i < choices.length; i++) {
+					alasql('INSERT INTO project VALUES(?,?,?,?,?,?);', choices[i]);
+				}
+			});
 
-
+	//LNGUAGE EXP
+	alasql('DROP TABLE IF EXISTS langexp;');
+	alasql('CREATE TABLE langexp(id INT IDENTITY, appid INT, langid INT, exp INT);');
+	var plangexp= alasql.promise('SELECT MATRIX * FROM CSV("data/LANGEXP-LANGEXP.csv", {headers: true})').then(
+			function(choices) {
+				for (var i = 0; i < choices.length; i++) {
+					alasql('INSERT INTO langexp VALUES(?,?,?,?,?,?);', choices[i]);
+				}
+			});
+	
+	// ACHEIVEMENT
+	alasql('DROP TABLE IF EXISTS acheivement;');
+	alasql('CREATE TABLE acheivement(id INT IDENTITY, appid INT, name STRING, description STRING);');
+	var pachieve= alasql.promise('SELECT MATRIX * FROM CSV("data/ACH-ACH.csv", {headers: true})').then(
+			function(choices) {
+				for (var i = 0; i < choices.length; i++) {
+					alasql('INSERT INTO acheivement VALUES(?,?,?,?,?,?);', choices[i]);
+				}
+			});
+		
 	//applications
 	alasql('DROP TABLE IF EXISTS application;');
-	alasql('CREATE TABLE application(id INT,jobid INT,name STRING,phone STRING,email STRING,date STRING,address STRING ,country STRING ,isactive INT ,linkedin STRING,github STRING,stackoverflow STRING);');
+	alasql('CREATE TABLE application(id INT,jobid INT,name STRING,phone STRING,email STRING,date STRING,address STRING ,country STRING ,isactive INT );');
 	var papplication = alasql.promise('SELECT MATRIX * FROM CSV("data/APPLICATION-APPLICATION.csv", {headers: true})').then(function(applications) {
 		for (var i = 0; i < applications.length; i++) {
-			alasql('INSERT INTO application VALUES(?,?,?,?,?,?,?,?,?,?,?,?);', applications[i]);
+			alasql('INSERT INTO application VALUES(?,?,?,?,?,?,?,?,?);', applications[i]);
 		}
 	});
 	// departments
@@ -87,6 +136,14 @@ DB.load = function() {
 	var pjobs = alasql.promise('SELECT MATRIX * FROM CSV("data/JOB-JOB.csv", {headers: true})').then(function(jobs) {
 		for (var i = 0; i < jobs.length; i++) {
 			alasql('INSERT INTO job VALUES(?,?,?,?,?,?,?,?,?,?,?);', jobs[i]);
+		}
+	});
+	// language
+	alasql('DROP TABLE IF EXISTS language;');
+	alasql('CREATE TABLE language(id INT, name STRING);');
+	var plangs = alasql.promise('SELECT MATRIX * FROM CSV("data/LANGUAGE-LANGUAGE.csv", {headers: true})').then(function(jobs) {
+		for (var i = 0; i < jobs.length; i++) {
+			alasql('INSERT INTO language VALUES(?,?);', jobs[i]);
 		}
 	});
 
@@ -118,22 +175,14 @@ DB.load = function() {
 	});
 
 	// plan
-	alasql('DROP TABLE IF EXISTS plan;');
-	alasql('CREATE TABLE plan(id INT,empid INT, type STRING, eventid INT);');
+	alasql('DROP TABLE IF EXISTS empplan;');
+	alasql('CREATE TABLE empplan(id INT,empid INT, type STRING, title STRING, st INT, ed INT);');
 	var pplan = alasql.promise('SELECT MATRIX * FROM CSV("data/PLAN-PLAN.csv", {headers: true})').then(function(interviews) {
 		for (var i = 0; i < interviews.length; i++) {
-			alasql('INSERT INTO plan VALUES(?,?,?,?);', interviews[i]);
+			alasql('INSERT INTO empplan VALUES(?,?,?,?,?,?);', interviews[i]);
 		}
 	});
 
-	// event
-	alasql('DROP TABLE IF EXISTS eventt;');
-	alasql('CREATE TABLE eventt(id INT,title STRING, st STRING, ed STRING);');
-	var pevent = alasql.promise('SELECT MATRIX * FROM CSV("data/EVENT-EVENT.csv", {headers: true})').then(function(interviews) {
-		for (var i = 0; i < interviews.length; i++) {
-			alasql('INSERT INTO eventt VALUES(?,?,?,?);', interviews[i]);
-		}
-	});
 	// step
 	alasql('DROP TABLE IF EXISTS step;');
 	alasql('CREATE TABLE step(id INT,name STRING);');
@@ -144,7 +193,7 @@ DB.load = function() {
 	});
 
 	// reload html
-	Promise.all([ pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan, pevent]).then(function() {
+	Promise.all([pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
 		window.location.reload(true);
 	});
 };

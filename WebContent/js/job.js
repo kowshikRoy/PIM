@@ -1,5 +1,6 @@
 var q1 = parseInt($.url().param("id"));
-$('#description a').attr('href', 'jobedit.html?id=' + q1);
+$('#description #jobeditbtn').attr('href', 'jobedit.html?id=' + q1);
+$('#description #gotojob').attr('href', 'form.html?jobid=' + q1);
 console.log(q1);
 
 if (q1) {

@@ -1,5 +1,5 @@
 body{
-    
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -11,9 +11,6 @@ body{
 }
 .container >.panel{
   margin-bottom: 50px;
-}
-.nav-tabs a {
-  color:#4285F4;
 }
 .fc-center h2{
   font-size: 18px;

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="lib/jquery.js"></script>
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/jquery-ui.css" rel="stylesheet">
+	<script src="lib/bootstrap.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link href='css/fullcalendar.min.css' rel='stylesheet' />
+	<link href='css/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+
+	
+
+	<script src="lib/alasql.js"></script>
+	<script src="lib/purl.js"></script>
+	<script src="js/db.js"></script>
+	<script src='lib/moment.min.js'></script>
+	
+	<script src='lib/fullcalendar.min.js'></script>
+	
+    <script src="lib/jquery-ui.js"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta name="viewport" content="width=device-width">
+	<title>COMPANY</title>
+</head>
+
+<body>
+    <div class="container" style="margin-top:50px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" id="jobid"></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8" style="border-right:1px solid #eeeeee;">
+                    <h5><strong>About Company</strong></h5>
+                    <div id="about-company"></div>
+                    <hr>
+                    <h5><strong>Responsibilities</strong></h5>
+                    <div id="resp"></div>
+                    <hr>
+                    <h5><strong>Requirements</strong></h5>
+                    <div id="req"></div>
+                    <hr>
+                    <h5><strong>Preferred Qualifications</strong></h5>
+                    <div id="pref_req"></div>
+                    </div>
+                    <div class="col-md-4" >
+                            <h5><strong>Department</strong></h5>
+                            <h5 id="job-dept"></h5> 
+
+                            <h5><strong>Employment</strong></h5>
+                            <h5 id="job-employ"></h5> 
+
+                            <h5><strong>Application Deadline</strong></h5>
+                            <h5 id="job-deadline"></h5> 
+                    </div>
+            </div>
+            </div>
+            
+        </div>
+        <button class="btn btn-default pull-right" onclick="showform()" >Apply Now</button>
+       <br>
+       <br>
+        <div class="panel panel-default" style="display:none;" id="panel-form">
+            <div class="panel-body">
+                <div class="panel panel-default" id="personal">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Personal Information</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Full Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cname" placeholder="Your Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="cemail" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+                                <div class="col-sm-10">
+                                    <input type="tel" class="form-control" id="cphone" placeholder="+6501234567">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Adress</label>
+                                <div class="col-sm-10">
+                                    <input type="tel" class="form-control" id="caddress" placeholder="Street Address, House no, Road no, zip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Country</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="ccountry">
+                                        <option>Singapore</option>
+                                        <option>UK</option>
+                                        <option>US</option>
+                                        <option>India</option>
+                                        <option>Australia</option>
+                                        <option>Bangladesh</option>
+                                        <option>Malyasia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel panel-default" id="education">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Education Details
+                            <button class="btn btn-default btn-xs" onclick="addNewEducation(this)">Add New</button>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+        
+                    </div>
+        
+                </div>
+                <div class="panel panel-default" id="workexp">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Work Experience
+                            <button class="btn btn-default btn-xs" onclick="addwork(this)">Add New</button>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+        
+                    </div>
+        
+                </div>
+                <div class="panel panel-default" id="projects">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Projects
+                            <button class="btn btn-default btn-xs" onclick="addproject(this)">Add New</button>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+        
+                    </div>
+        
+                </div>
+                <div class="panel panel-default" id="ProgrammingLanguages">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Programming Languages
+                            <button class="btn btn-default btn-xs" onclick="addlanguage(this)">Add New</button>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+        
+                    </div>
+        
+                </div>
+                <div class="panel panel-default" id="achievement">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Acheivement
+                            <button class="btn btn-default btn-xs" onclick="addachievement(this)">Add New</button>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+        
+                    </div>
+        
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-info btn-sm" onclick="applicationSubmit()" >Submit</button>
+            </div>
+        </div>
+    
+    </div>
+    
+    <script src="js/form.js"></script>
+	
+</body>
+
+</html>
