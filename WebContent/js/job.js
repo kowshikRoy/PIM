@@ -69,6 +69,15 @@ if (q1) {
 
 /* ------------------------ Utility Function ----------------------*/
 
+function deleteCandidate(e)
+{
+
+  var oo = $(e.closest('li')).attr('data-id');
+  console.log(oo);
+  var id = parseInt(oo.slice(9));
+  alasql('update application set isactive = 0 where id = ?',[id]);
+  $(e.closest('li')).remove();
+}
 function buttonInterview(app)
 {
   var jobid = app.jobid;
@@ -130,7 +139,7 @@ function generateListFromApplication(arr)
 {
     var list = $('<ul class="list-group"></ul>');
     for(var i= 0; i < arr.length; i ++) {
-      var li = '<li class="list-group-item">\
+      var li = '<li data-id="candidate' + arr[i].id + '" class="list-group-item">\
       <div class="row">\
           <div class="col-md-2">' + arr[i].id + ' ' + arr[i].name + '</div> \
           <div class="col-md-8"> \
@@ -139,7 +148,7 @@ function generateListFromApplication(arr)
                   '</div>\
           </div>\
           <div class="col-md-1"><button class="btn btn-success btn-sm">Advance</button></div>\
-          <div class="col-md-1"><button class="btn btn-warning btn-sm">Reject</button></div>\
+          <div class="col-md-1"><button onclick="deleteCandidate(this)"  class="btn btn-warning btn-sm">Reject</button></div>\
       </div> </li>';
         list.append(li);
     }
@@ -455,3 +464,5 @@ function processInterviewRequest() {
     }
     }
 } 
+
+

@@ -304,3 +304,5 @@ function acceptRequest(e)
 	e.closest('li').remove();
 }
 
+/*---------------------------- FEEDBACK ------------------*/
+
