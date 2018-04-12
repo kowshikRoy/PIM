@@ -69,11 +69,33 @@ if (q1) {
 
 /* ------------------------ Utility Function ----------------------*/
 
+function buttonInterview(app)
+{
+  var jobid = app.jobid;
+  var steps = alasql('select * from pipeline where jobid = ? order by stepid',[jobid]);
+  var out = "";
+  for(var i = 0; i < steps.length; i ++) {
+    var pipe = steps[i].stepid;
+    out += '<button class="btn btn-default">' + alasql('select * from step where id = ?',[pipe])[0].name + '</button>';
+  }
+  return out;
+}
 function generateListFromApplication(arr)
 {
     var list = $('<ul class="list-group"></ul>');
     for(var i= 0; i < arr.length; i ++) {
-        list.append('<li class="list-group-item">#' + arr[i].id + '-' + arr[i].name +  '</li>')
+      var li = '<li class="list-group-item">\
+      <div class="row">\
+          <div class="col-md-2">John Doe</div> \
+          <div class="col-md-8"> \
+                  <div class="btn-group btn-group-sm" role="group" aria-label="...">' 
+                  + buttonInterview(arr[i]) +
+                  '</div>\
+          </div>\
+          <div class="col-md-1"><button class="btn btn-success btn-sm">Advance</button></div>\
+          <div class="col-md-1"><button class="btn btn-warning btn-sm">Reject</button></div>\
+      </div> </li>';
+        list.append(li);
     }
     return list;
 
