@@ -33,7 +33,7 @@ for(var i = 0; i < pendings.length ; i ++) {
     var tr = $('<tr></tr>');
     tr.append('<td>' + single.intReqid + '</td>');
     tr.append('<td>' + app.jobid + '</td>');
-    tr.append('<td><a href="candidateInterviewDateChoice.html?id="' + app.id + '">#' + app.id + '-' + app.name + '</a></td>');
+    tr.append('<td><a href="candidateInterviewDateChoice.html?id=' + app.id + '">#' + app.id + '-' + app.name + '</a></td>');
     tr.append('<td>' + new Date(single.time).toString() + '</td>');
     tr.append('<td>#<a href="emp.html?id='+ single.empid+ '">' + single.empid + '-' +emp.name + '</a></td>');
     console.log(tr);

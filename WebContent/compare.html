@@ -19,6 +19,17 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta name="viewport" content="width=device-width">
+    <style>
+        .ui-slider .ui-slider-handle {
+            height: 20px;
+            width: 30px;
+            padding-left:7px;
+            background-color: #33b5e5;
+            color:white;
+            border: none;
+            
+        }
+    </style>
 	<title>COMPANY</title>
 </head>
 
@@ -44,10 +55,10 @@
 						<a href="index.html">Personal Info Management
 						</a>
                     </li>
-                    <li class="active"
-						<a href="dashboard.html">Dashboard
-						</a>
-					</li>
+                    <li >
+                            <a href="dashboard.html">Dashboard
+                            </a>
+                        </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
@@ -57,10 +68,10 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-                                <li><a href="newjob.html">Create New Job</a></li>
-                                <li><a href="compare.html">Compare Candidates</a></li>
-                                <li><a href="processRequest.html">Process Request</a></li>
-                            </ul>
+                            <li><a href="newjob.html">Create New Job</a></li>
+                            <li><a href="compare.html">Compare Candidates</a></li>
+                            <li><a href="processRequest.html">Process Request</a></li>
+						</ul>
                     </li>
                     <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -90,69 +101,41 @@
 		</div>
 		<!-- /.container-fluid -->
     </nav>
-    
-    <div class="container" >
-        <div class="panel panel-primary" id="request-content">
-            <div class="panel-heading">
-                <div class="panel-title">Interview Request</div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Job id</td>
-                            <td>Application id and name</td>
-                            <td>Requested time</td>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer">
-                <button class="btn btn-sm btn-default" onclick="processInterviewRequest()">Process All</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                    <select id="job-select" class="form-control" onchange="loadCompare()">
+                            <option disabled value="0">To compare, Select A Job First</option>
+                        </select>
             </div>
         </div>
-
-        <div class="panel panel-danger" id="request-waiting">
-                <div class="panel-heading">
-                    <div class="panel-title">Interview Waiting for confirmation of interviewer</div>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                            <td>#</td>
-                            <td>Job id</td>
-                            <td>Application id and name</td>
-                            <td>Requested time</td>
-                            <td>Employeed id and name</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-    
-                        </tbody>
-                    </table>
-                </div>
-                
-            </div>
-        <div class="panel panel-danger" id="sendChooseForm">
-                <div class="panel-heading">
-                    <div class="panel-title">Cound not find any match for these candidates</div>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        
-                    </ul>
-                </div>
-                
-            </div>
         
     </div>
-    <script src="js/interviewRequest.js"></script>
-</body>
+    <div id = "checkslider"></div>
+    <div class="container" style="width:90%; margin-top: 20px;" id = "show">
+        <div class="row">
+            <div class="col-md-3" id="skills">
 
+            </div>
+            <div class="col-md-9" id="content">
+                
+            </div>
+        </div>
+            
+        </div>
+        <div class="modal fade" id="feedback-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Feedback</h4>
+                        </div>
+                        <div class="modal-body" id="feedback-candidate">
+            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+    <script src="js/compare.js"></script>
+</body>
 </html>

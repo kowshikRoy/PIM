@@ -73,20 +73,66 @@ function buttonInterview(app)
 {
   var jobid = app.jobid;
   var steps = alasql('select * from pipeline where jobid = ? order by stepid',[jobid]);
+  var appComplete = alasql('select * from feedback where jobid= ? and appid = ? order by stepid',[jobid, app.id]);
+
+  var myset= new Set();
+  for(var i = 0; i < appComplete.length;  i ++) myset.add(appComplete[i].stepid);
+  console.log(myset);
+
+
   var out = "";
   for(var i = 0; i < steps.length; i ++) {
     var pipe = steps[i].stepid;
-    out += '<button class="btn btn-default">' + alasql('select * from step where id = ?',[pipe])[0].name + '</button>';
+    var newString = "";
+    if(myset.has(pipe)) {
+      newString = '<button onclick="showFeedbackModal(this)" data-jobid="'+ app.jobid + '" data-appid="'+ app.id + '" data-stepid="' + pipe + '"  class="btn btn-success">' + alasql('select * from step where id = ?',[pipe])[0].name + '</button>';
+    }
+    else {
+      if(app.isactive == 0) newString = '<button class="btn btn-danger">' + alasql('select * from step where id = ?',[pipe])[0].name + '</button>';
+
+      else newString = '<button class="btn btn-default">' + alasql('select * from step where id = ?',[pipe])[0].name + '</button>';
+    } 
+
+    out += newString;
   }
   return out;
 }
+
+function showFeedbackModal(e)
+{
+  var jobid = parseInt($(e).attr('data-jobid'));
+  var appid = parseInt($(e).attr('data-appid'));
+  var stepid = parseInt($(e).attr('data-stepid'));
+
+  console.log(jobid, appid, stepid);
+  var row = alasql('select * from feedback where jobid = ? and appid = ? and stepid= ?', [jobid, appid, stepid])[0];
+
+  var ratingid = row.ratingid;
+  var comment = row.comment;
+
+  console.log(comment);
+  console.log(ratingid);
+  var result = alasql('select * from rating where id = ?',[ratingid]);
+
+  $('#feedback-modal').modal('show');
+  var list = $('<ul class="list-group"></ul>');
+  for(var i = 0; i < result.length; i ++) {
+    var li = '<li class="list-group-item">' + result[i].skill + ' - ' + result[i].rating +'</li>';
+    list.append(li);
+  }
+  $('#feedback-candidate').html(list);
+  $('#feedback-candidate').append('<strong>Notes</strong>');
+  $('#feedback-candidate').append('<p>' + comment + '</p>');
+}
+
+
 function generateListFromApplication(arr)
 {
     var list = $('<ul class="list-group"></ul>');
     for(var i= 0; i < arr.length; i ++) {
       var li = '<li class="list-group-item">\
       <div class="row">\
-          <div class="col-md-2">John Doe</div> \
+          <div class="col-md-2">' + arr[i].id + ' ' + arr[i].name + '</div> \
           <div class="col-md-8"> \
                   <div class="btn-group btn-group-sm" role="group" aria-label="...">' 
                   + buttonInterview(arr[i]) +

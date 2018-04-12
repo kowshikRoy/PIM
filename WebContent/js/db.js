@@ -205,7 +205,26 @@ DB.load = function() {
 		}
 	});
 	
-	
+	//feedback
+
+	alasql('DROP TABLE IF EXISTS feedback;');
+	alasql('CREATE TABLE feedback(jobid INT,appid INT, empid INT, stepid INT,comment STRING, ratingid INT);');
+	var pfeedback = alasql.promise('SELECT MATRIX * FROM CSV("data/FEEDBACK-FEEDBACK.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO feedback VALUES(?,?,?,?,?,?);', interviews[i]);
+		}
+	});
+
+	//rating
+	alasql('DROP TABLE IF EXISTS rating;');
+	alasql('CREATE TABLE rating(id INT,cardid INT, skill STRING, rating INT);');
+	var prating = alasql.promise('SELECT MATRIX * FROM CSV("data/RATING-RATING.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO rating VALUES(?,?,?,?);', interviews[i]);
+		}
+	});
+
+
 	//card
 
 	alasql('DROP TABLE IF EXISTS card;');
@@ -219,7 +238,7 @@ DB.load = function() {
 	// pipeline
 	alasql('DROP TABLE IF EXISTS pipeline;');
 	alasql('CREATE TABLE pipeline(jobid INT,stepid INT, cardid INT);');
-	var ppipe = alasql.promise('SELECT MATRIX * FROM CSV("data/PIPELINE-PIPELINE.csv", {headers: true})').then(function(interviews) {
+	var ppipe = alasql.promise('SELECT MATRIX * FROM CSV("data/PIPE-PIPE.csv", {headers: true})').then(function(interviews) {
 		for (var i = 0; i < interviews.length; i++) {
 			alasql('INSERT INTO pipeline VALUES(?,?,?);', interviews[i]);
 		}
@@ -245,7 +264,7 @@ DB.load = function() {
 	
 
 	// reload html
-	Promise.all([psendAgainChoiceForm, pdeclinedInterview,ppendingReq,pscheduleInterview,pinterviewerReq, pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
+	Promise.all([prating,pfeedback,psendAgainChoiceForm, pdeclinedInterview,ppendingReq,pscheduleInterview,pinterviewerReq, pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
 		window.location.reload(true);
 	});
 };
