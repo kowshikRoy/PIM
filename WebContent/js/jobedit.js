@@ -1,5 +1,5 @@
-var q1 = parseInt($.url().param("id"));
-console.log(q1);
+var jobid = parseInt($.url().param('id'));
+
 
 var positions = alasql('select * from position');
 console.log(positions);
@@ -45,17 +45,9 @@ function insertPosition(e) {
 }
 
 function insertJob() {
-    var id = alasql('SELECT MAX(id) + 1 as id FROM job')[0].id;
-    var texts = $('textarea');
+
     var newjob = []
-    
-    
-    var description = "Job Description <br>";
-    for(var i = 0; i < texts.length; i++){
-        var e = texts[i];
-        description = description + '<br>' + texts[i].value;
-    }
-    
+
     var today = new Date();
     var date = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
     var position = parseInt($('#position select').val());
@@ -63,17 +55,22 @@ function insertJob() {
     today =  new Date($('#application-close').val());
     var closedate = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
     
-    newjob.push(id);
+    console.log($('#employment select').val());
+    newjob.push(jobid);
     newjob.push(position);
     newjob.push(date);
-    newjob.push(description);
+    newjob.push($('#responsibility').val());
     newjob.push(active);
     newjob.push(closedate);
     newjob.push(parseInt($('#department select').val()));
-    newjob.push($('#employment').val());
-    console.log(newjob);
-
-    alasql('INSERT INTO job VALUES(?,?,?,?,?,?,?,?);', newjob);
-
-
+    newjob.push($('#employment select').val());
+    newjob.push($('#company').val());
+    newjob.push($('#requirement').val());
+    newjob.push($('#preferred_req').val());
+    console.log(jobid);
+    alasql('delete from job where id = ?', [jobid]);
+    console.log(newjob); 
+    alasql('INSERT INTO job VALUES(?,?,?,?,?,?,?,?,?,?,?);', newjob);
+    
+    window.location.assign('job.html?id=' + jobid);
 }

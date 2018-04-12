@@ -155,6 +155,7 @@ DB.load = function() {
 			alasql('INSERT INTO interview VALUES(?,?);', interviews[i]);
 		}
 	});
+	
 
 	// INTERVIEW REQUEST
 	alasql('DROP TABLE IF EXISTS interviewRequest;');
@@ -167,14 +168,44 @@ DB.load = function() {
 
 
 	// FIXED INTERVIEW
+	console.log("HELLO");
 	alasql('DROP TABLE IF EXISTS scheduleInterview;');
 	alasql('CREATE TABLE scheduleInterview(id INT,jobid INT, appid INT, empid INT, time INT);');
-	var pscheduleInterview = alasql.promise('SELECT MATRIX * FROM CSV("data/FIXED-FIXED.csv", {headers: true})').then(function(interviews) {
+	var pscheduleInterview = alasql.promise('SELECT MATRIX * FROM CSV("data/FIXE-FIXE.csv", {headers: true})').then(function(interviews) {
 		for (var i = 0; i < interviews.length; i++) {
+			console.log(i);
 			alasql('INSERT INTO scheduleInterview VALUES(?,?,?,?,?);', interviews[i]);
 		}
 	});
 
+	// DECLINED INTERVIEW
+	alasql('DROP TABLE IF EXISTS declinedInterview;');
+	alasql('CREATE TABLE declinedInterview(id INT, intReqid INT, empid INT, time INT);');
+	var pdeclinedInterview = alasql.promise('SELECT MATRIX * FROM CSV("data/DEC-DEC.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO declinedInterview VALUES(?,?,?,?);', interviews[i]);
+		}
+	});
+
+	// PENDING Req 
+	alasql('DROP TABLE IF EXISTS pendingReq;');
+	alasql('CREATE TABLE pendingReq(intReqid INT, appid INT, empid INT, time INT);');
+	var ppendingReq = alasql.promise('SELECT MATRIX * FROM CSV("data/PENDING-PENDING.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO pendingReq VALUES(?,?,?,?);', interviews[i]);
+		}
+	});
+
+	//SEND CHOICE FORM AGAIN
+	alasql('DROP TABLE IF EXISTS sendAgainChoiceForm;');
+	alasql('CREATE TABLE sendAgainChoiceForm(appid INT);');
+	var psendAgainChoiceForm = alasql.promise('SELECT MATRIX * FROM CSV("data/SENDCHOICE-SENDCHOICE.csv", {headers: true})').then(function(interviews) {
+		for (var i = 0; i < interviews.length; i++) {
+			alasql('INSERT INTO sendAgainChoiceForm VALUES(?);', interviews[i]);
+		}
+	});
+	
+	
 	//card
 
 	alasql('DROP TABLE IF EXISTS card;');
@@ -211,9 +242,10 @@ DB.load = function() {
 			alasql('INSERT INTO step VALUES(?,?);', interviews[i]);
 		}
 	});
+	
 
 	// reload html
-	Promise.all([pscheduleInterview,pinterviewerReq, pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
+	Promise.all([psendAgainChoiceForm, pdeclinedInterview,ppendingReq,pscheduleInterview,pinterviewerReq, pachieve, plangexp, pproject, pwork, peducan,plangs, pemp, paddr, pfamily, pedu, pchoice, papplication, ppositions, pjobs, pinterviewer , pdepts, ppipe, pstep, pcard, pplan]).then(function() {
 		window.location.reload(true);
 	});
 };

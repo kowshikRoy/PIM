@@ -1,4 +1,7 @@
 var canid = parseInt($.url().param('id'));
+if(!canid) {
+    window.location.href = "page404-candidate.html";
+}
 var application = alasql('select * from application where id = ?',[canid])[0];
 
 var intreq = alasql('select * from interviewRequest where appid = ?',[canid]);

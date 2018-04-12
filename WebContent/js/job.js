@@ -9,12 +9,17 @@ if (q1) {
   if (job) {
     $("#page404").hide();
     // job description
-    $("#j-description .col-md-8").text(job.description);
-    $('#job-dept').text(alasql('select * from department where id= ?', [job.dept])[0].dept);
-    $('#job-employ').text(job.employment);
-    $('#job-deadline').text(job.closedate);
-
-
+    $('#job-id').text('#'+job.id);
+    $('#job-name').text(alasql('select * from position where id = ?',[job.position])[0].position);
+    $("#job-company").text(job.company);
+    $("#job-resp").text(job.description);
+    $("#job-qua").text(job.requirement);
+    $("#job-pre").text(job.preferred_req);
+    $("#job-dept").text(
+      alasql("select * from department where id= ?", [job.dept])[0].dept
+    );
+    $("#job-employ").text(job.employment);
+    $("#job-deadline").text(job.closedate);
 
     // interviewer populate
     populateInterviewer();
@@ -23,21 +28,55 @@ if (q1) {
     populateStep();
 
     // candidate populate
-    var candidates = alasql("select * from application where jobid = ?", [q1]);
+    var active_candidates = alasql("select * from application where jobid = ? and isactive = 1", [q1]);
+    var job_active_candidate = $('#j-active-candidate').html(generateListFromApplication(active_candidates));
+    
+    var all_candidates = alasql("select * from application where jobid = ?", [q1]);
+    $('#j-all-candidate').html(generateListFromApplication(all_candidates));
+    
+    var cans = alasql('select * from application where jobid= ? and isactive = 1 order by email', [q1]);
+    console.log(cans);
+    var dup = $('#j-duplicate-candidate');
+    for(var i = 0; i < cans.length ; i ++) {
+        var j = i;
+        var duplist = []
+        while(j < cans.length && cans[j].email == cans[i].email) {
+            duplist.push(cans[j]);
+            j ++;
+        }
+        if(duplist.length > 1) {
+            dup.append(generateListFromApplication(duplist));
 
-    for (var i = 0; i < candidates.length; i++) {}
+        }
+        i = j-1;
+    }
+
+
+
+
   } else {
     $("#content").hide();
     $("#page404").html(
       '<h1>404</h1> <h4> Please use valid job id </h4> <a href="dashboard.html" class="btn btn-warning"> Go to Dashboard </a> '
     );
   }
-} 
-else {
+} else {
   $("#content").hide();
   $("#page404").html(
     '<h1>404</h1> <h4> Please use valid job id </h4> <a href="dashboard.html" class="btn btn-warning"> Go to Dashboard </a> '
   );
+}
+
+/* ------------------------ Utility Function ----------------------*/
+
+function generateListFromApplication(arr)
+{
+    var list = $('<ul class="list-group"></ul>');
+    for(var i= 0; i < arr.length; i ++) {
+        list.append('<li class="list-group-item">#' + arr[i].id + '-' + arr[i].name +  '</li>')
+    }
+    return list;
+
 }
 
 /* ------------------------- Add interviewer -----------------------*/
@@ -248,14 +287,103 @@ function saveCard(e) {
 }
 
 function processInterviewRequest() {
-	var req = alasql('select * from interviewRequest order by time');
-	var interviewers = alasql('select * from interview where jobid = ?',q1);
-	for (var i = 0; i < req.length; i++) {
-		var single = req[i];
-		var interviews = alasql('select * from scheduleInterview where appid = ?', single.appid);
-		if (interviews.length > 0) {
-			continue;
-		}
-		
-	}
+  var req = alasql("select * from interviewRequest order by time");
+
+  for (var i = 0; i < req.length; i++) {
+    var single = req[i];
+    var jobid = alasql(
+      "select * from application where id = ?",
+      single.appid
+    )[0].jobid;
+
+    // check if the candidate has scheduled an interview
+    var interviews = alasql(
+      "select * from scheduleInterview where appid = ?",
+      single.appid
+    );
+    if (interviews.length > 0) {
+      continue;
+    }
+
+    // check if the candidate has already pending request
+    var pendingReq = alasql(
+      "select * from pendingReq where appid = ? ",
+      single.appid
+    );
+    if (pendingReq.length > 0) continue;
+
+    // check if the request has been declined by all the interviewer
+    var interviewers = alasql("select * from interview where jobid = ?", [
+      jobid
+    ]);
+    var declinedReq = alasql(
+      "select * from declinedInterview where intReqid = ?",
+      single.id
+    );
+
+
+    var scheduled = 0;
+    for (var j = 0; j < interviewers.length; j++) {
+        var fixedinterview = alasql('select * from scheduleInterview where empid = ? and time = ?', [interviewers[j].empid, single.time] );
+        if(fixedinterview.length > 0) continue;
+        var flag = 0;
+        for (var k = 0; k < declinedReq.length; k++) {
+            if (declinedReq[k].empid == interviewers[j].empid) {
+                flag = 1;
+            }
+        }
+
+        if (flag) continue;
+        var plans = alasql("select * from empplan where empid = ?", [interviewers[j].empid]);
+
+
+        var time = single.time;
+        var today = new Date(time);
+        for (var k = 0; k < plans.length; k++) {
+        if (plans[k].type == "once") {
+            if (plans[k].st <= time && plans[k].ed > time) {
+            flag = 1;
+            }
+        }
+        else if(plans[k].type == 'daily') {
+            if(time < plans[k].st) continue;
+            var st = new Date(plans[k].st);
+            st = st.setDate(today.getDate());
+            console.log(st);
+
+            var ed = new Date(plans[k].ed);
+            ed = ed.setDate(today.getDate());
+            console.log(st,ed);
+
+            if(time >= st && time < ed) {
+                flag = 1;
+            }
+
+        }
+        else {
+            if(time < plans[k].st) continue;
+            var day = 1000*60*60*24;
+            var diff = Math.floor((time-plans[k].st)/(7*day));
+            var st = new Date(plans[k].st), ed = new Date(plans[k].ed);
+            st = st.setDate(st.getDate() + diff * 7);
+            ed = ed.setDate(ed.getDate() + diff * 7);
+
+            if(time >= st && time < ed) flag = 1;
+
+        }
+
+            if(flag) {
+                scheduled = 1;
+            }
+        }
+
+        if(scheduled) {
+
+            var id = alasql('SELECT MAX(id) + 1 as id FROM pendingReq')[0].id;
+            console.log(id);
+            alasql('insert into pendingReq values(?,?,?,?)', [single.id, single.appid,  interviewers[j].empid, time ]);
+            break;
+        }
+    }
+    }
 } 

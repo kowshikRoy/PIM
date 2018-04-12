@@ -180,8 +180,13 @@ $('#calendar').fullCalendar({
 	 planList();
   }
   $('#calendar-choose').fullCalendar('option', 'timezone', 'local');
+
+
+
+
 planList();
 showCalendar();
+showNotification();
 function planList() 
 {
     var plans = alasql('select * from empplan where empid = ? order by id',[id]);
@@ -244,15 +249,58 @@ function showCalendar()
 {
 	console.log(100);
 	$('#calendar').fullCalendar('option', 'timezone', 'local');
-    var plans = alasql('select * from empplan where empid = ? order by id',[id]);
+	var plans = alasql('select * from scheduleInterview where empid = ?',[id]);
+	console.log(plans);
     for(var i = 0; i < plans.length ; i ++) {
         var newEvent = {
-            title : plans[i].title,
-            start : new Date(plans[i].st),
-            end   : new Date(plans[i].ed)
+            title : 'interview',
+            start : new Date(plans[i].time)
         }
         $('#calendar').fullCalendar('renderEvent',newEvent, true);
     }
     
+}
+function showNotification()
+{
+	console.log(id);
+	var pending = alasql('select * from pendingReq where empid = ?',[id]);
+	console.log(pending);
+	var list = $('#notifications .list-group');
+	console.log(list);
+	for(var i = 0; i < pending.length ; i ++) {
+		var li  = '<li data-id="'+ pending[i].intReqid + '" class="list-group-item">Interview Request on <strong>' + new Date(pending[i].time).toString() + 
+		'   </strong><button class="btn btn-sm btn-success" onclick="acceptRequest(this)" >Accept</button><button onclick="deleteRequest(this)" class="btn btn-sm btn-danger" style="float:right">Decline</button></li>';
+		list.append(li);
+	}
+}
+
+function deleteRequest(e)
+{
+	var reqid = parseInt($(e.closest('li')).attr('data-id'));
+	console.log(id);
+	var request = alasql('select * from pendingReq where intReqid = ?', [reqid])[0];
+	console.log(request);
+
+	var newId = alasql('SELECT MAX(id) + 1 as id FROM declinedInterview')[0].id;
+	alasql('insert into declinedInterview values(?,?,?,?)', [newId, reqid , id, request.time] );
+	alasql('delete from pendingReq where intReqid = ?', [reqid]);
+	e.closest('li').remove();
+}
+
+function acceptRequest(e)
+{
+	var reqid = parseInt($(e.closest('li')).attr('data-id'));
+	console.log(id);
+	var request = alasql('select * from pendingReq where intReqid = ?', [reqid])[0];
+	var application = alasql('select * from application where id = ?', [request.appid])[0];
+	
+	console.log(request);
+
+
+	alasql('delete from pendingReq where intReqid = ?', [reqid]);
+	var newid = alasql('select MAX(id)+1 as id FROM scheduleInterview')[0].id;
+	alasql('INSERT INTO scheduleInterview VALUES(?,?,?,?,?)', [newid , application.jobid, application.id, id, request.time]);
+	
+	e.closest('li').remove();
 }
 
